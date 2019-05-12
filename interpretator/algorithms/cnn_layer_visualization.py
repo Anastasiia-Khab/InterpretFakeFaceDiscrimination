@@ -35,7 +35,7 @@ class CNNLayerVisualization():
         # Hook the selected layer
         self.model[self.selected_layer].register_forward_hook(hook_function)
 
-    def visualise_layer_with_hooks(self, save=False, logs=False, epochs=31):
+    def visualise_layer_with_hooks(self, save=False, logs=False, epochs=30):
         # Hook the selected layer
         self.hook_layer()
         # Generate a random image

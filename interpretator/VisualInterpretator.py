@@ -20,6 +20,10 @@ import numpy as np
 from torchvision.models import alexnet
 #from torchvision.models import resnet34, vgg19
 
+import matplotlib.pyplot as plt
+
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 class VisualInterpretator():
@@ -27,9 +31,8 @@ class VisualInterpretator():
     def __init__(self, model):
 
         self.model = model
-
         self.cam_heatmaps = []
-        self.smooth_grads = []
+        self.grads = []
 
     def gradcam(self, image, target_layer, target_class):
 
@@ -70,17 +73,17 @@ class VisualInterpretator():
         gbp = GuidedBackprop(self.model)
 
         vanilla_smooth_grad = generate_smooth_grad(vbp, tensor_image, target_class, param_n, param_sigma_multiplier)
-        guided_smooth_grad = generate_smooth_grad(gbp, tensor_image, target_class, param_n, param_sigma_multiplier)
+        guided_grad = gbp.generate_gradients(tensor_image, target_class)
 
-        vanilla_smooth_grad = convert_to_grayscale(vanilla_smooth_grad)
-        guided_smooth_grad = convert_to_grayscale(guided_smooth_grad)
+        guided_grad = guided_grad - guided_grad.min()
+        guided_grad /= guided_grad.max()
 
         vanilla_smooth_grad = Image.fromarray(format_np_output(vanilla_smooth_grad.squeeze()))
-        guided_smooth_grad = Image.fromarray(format_np_output(guided_smooth_grad.squeeze()))
+        guided_smooth_grad = Image.fromarray(format_np_output(guided_grad.squeeze()))
 
-        self.smooth_grads = [vanilla_smooth_grad, guided_smooth_grad]
+        self.grads = [vanilla_smooth_grad, guided_smooth_grad]
 
-        return self.smooth_grads
+        return self.grads
 
     def cnn_vis_layers(self, target_layer, target_position, epochs=300):
 
@@ -90,6 +93,39 @@ class VisualInterpretator():
         output = Image.fromarray(output)
 
         return output
+
+    def visualization(self, image, target_layer, target_class):
+
+        self.gradcam(image, target_layer, target_class)
+        self.smooth_grad(image, target_class)
+
+        fig = plt.figure(figsize=(15, 15), dpi=150)
+        ax1 = plt.subplot2grid((4, 4), (0, 0), colspan=2, rowspan=2)
+        ax1.axis('off')
+        ax1.set_title('Original image')
+        ax1.imshow(image)
+
+        ax2 = plt.subplot2grid((4, 4), (0, 2), colspan=1, rowspan=1)
+        ax2.axis('off')
+        ax2.set_title('GradCam')
+        ax2.imshow(self.cam_heatmaps[1])
+
+        ax3 = plt.subplot2grid((4, 4), (0, 3), colspan=1, rowspan=1)
+        ax3.axis('off')
+        ax3.set_title('GradCam + image')
+        ax3.imshow(self.cam_heatmaps[2])
+
+        ax4 = plt.subplot2grid((4, 4), (1, 2), colspan=1, rowspan=1)
+        ax4.axis('off')
+        ax4.set_title('Vanilla gradient (high contrast)')
+        ax4.imshow(self.grads[0])
+
+        ax5 = plt.subplot2grid((4, 4), (1, 3), colspan=1, rowspan=1)
+        ax5.axis('off')
+        ax5.set_title('Guided gradient')
+        ax5.imshow(self.grads[1])
+
+        plt.show()
 
 if __name__ == '__main__':
 
@@ -104,3 +140,5 @@ if __name__ == '__main__':
     #interp.gradcam(cat, target_layer=11, target_class=16)[0].show()
     #interp.smooth_grad(cat, target_class=4)[0].show()
     interp.cnn_vis_layers(5, 5).show()
+
+    interp.visualization(cat, target_layer=6, target_class=281)
