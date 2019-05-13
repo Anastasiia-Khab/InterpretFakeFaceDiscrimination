@@ -348,7 +348,7 @@ class Generator(nn.Module):
         c = c.view(c.size(0), c.size(1), 1, 1)
         c = c.repeat(1, 1, x.size(2), x.size(3))
         x = torch.cat([x, c], dim=1)
-return self.main(x)
+        return self.main(x)
 
 class StyledGenerator(nn.Module):
     def __init__(self, code_dim=512, n_mlp=8):
