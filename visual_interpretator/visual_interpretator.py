@@ -25,7 +25,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 class VisualInterpretator():
 
-    def __init__(self, model, transforms, apply_transform=True):
+    def __init__(self, model, transforms=None, apply_transform=True):
 
         self.apply_transform = apply_transform
         self.transforms = transforms
