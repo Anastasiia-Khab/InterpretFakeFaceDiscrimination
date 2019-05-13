@@ -7,7 +7,7 @@ from model import StyledGenerator
 
 def generate_fakes(num_images):
     generator = StyledGenerator(512).cuda()
-    generator.load_state_dict(torch.load('checkpoint/weights.model)['generator'])
+    generator.load_state_dict(torch.load('checkpoint/weights.model')['generator'])
 
     mean_style = None
     step = 6
