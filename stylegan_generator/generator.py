@@ -6,7 +6,7 @@ from PIL import Image
 from model import StyledGenerator
 
 def generate_fakes(num_images):
-    generator = StyledGenerator(512).cuda(2)
+    generator = StyledGenerator(512).cuda()
     generator.load_state_dict(torch.load('checkpoint/weights.model)['generator'])
 
     mean_style = None
@@ -14,7 +14,7 @@ def generate_fakes(num_images):
     shape = 4 * 2 ** step
 
     for i in range(10):
-        style = generator.mean_style(torch.randn(1024, 512).cuda(2))
+        style = generator.mean_style(torch.randn(1024, 512).cuda())
 
         if mean_style is None:
             mean_style = style
@@ -25,7 +25,7 @@ def generate_fakes(num_images):
 
     with torch.no_grad():
         images = generator(
-            torch.randn(num_images, 512).cuda(2),
+            torch.randn(num_images, 512).cuda(),
             step=step,
             alpha=1,
             mean_style=mean_style,
