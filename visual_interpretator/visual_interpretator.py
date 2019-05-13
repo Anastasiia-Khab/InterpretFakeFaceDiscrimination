@@ -29,7 +29,7 @@ class VisualInterpretator():
         self.apply_transform = apply_transform
         self.transforms = transforms
 
-        self.model = self.model.to(self.device)
+        self.model = model.to(self.device)
 
         self.cam_heatmaps = []
         self.grads = []
