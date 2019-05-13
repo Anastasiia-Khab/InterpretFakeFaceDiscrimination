@@ -8,6 +8,11 @@ transform = Compose([
     ToTensor(),
     Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
 
+def change_key(d, old, new):
+    for _ in range(len(d)):
+        k, v = d.popitem(False)
+        d[new if old == k else k] = v
+
 def get_discriminator():
     discrim = Discriminator(image_size=256).cuda()
     discrim.load_state_dict(torch.load('stargan_discriminator/checkpoint/weights.model'))
@@ -16,6 +21,12 @@ def get_discriminator():
 def get_modified_discriminator():
     discrim = ModifiedDiscriminator(image_size=256).cuda()
     discrim.load_state_dict(torch.load('stargan_discriminator/checkpoint/weights.model'))
+
+    change_key(discrim.__dict__['_modules'], 'main', 'features')
+    discrim._modules['features'].add_module('12', discrim._modules['conv1'])
+    del discrim._modules['conv1']
+    del discrim._modules['conv2']
+    
     return discrim
 
 def sigmoid(x):

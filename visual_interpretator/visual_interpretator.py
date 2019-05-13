@@ -21,15 +21,16 @@ from torchvision.models import alexnet
 
 import matplotlib.pyplot as plt
 
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-
 class VisualInterpretator():
 
-    def __init__(self, model, transforms=None, apply_transform=True):
+    def __init__(self, model, transforms=None, apply_transform=True, device=torch.device('cuda' if torch.cuda.is_available() else 'cpu')):
 
+        self.device = device
         self.apply_transform = apply_transform
         self.transforms = transforms
-        self.model = model
+
+        self.model = self.model.to(self.device)
+
         self.cam_heatmaps = []
         self.grads = []
 
@@ -46,6 +47,8 @@ class VisualInterpretator():
                 tensor_image = self.transforms(Image.fromarray(image)).unsqueeze(0)
             else:
                 tensor_image = torch.Tensor(image).unsqueeze(0).permute(0, 3, 1, 2)
+
+        tensor_image = tensor_image.to(self.device)
 
         grad_cam = GradCam(self.model, target_layer)
         cam_activation_map = grad_cam.generate_cam(tensor_image, target_class)
@@ -77,6 +80,7 @@ class VisualInterpretator():
                 tensor_image = torch.Tensor(image).unsqueeze(0).permute(0, 3, 1, 2)
 
         tensor_image.requires_grad = True
+        tensor_image = tensor_image.to(self.device)
 
         vbp = VanillaBackprop(self.model)
         gbp = GuidedBackprop(self.model)
