@@ -87,6 +87,22 @@ class Discriminator(nn.Module):
         out_cls = self.conv2(h)
         return out_src, out_cls.view(out_cls.size(0), out_cls.size(1))
 
+class Predictor(nn.Module):
+
+    def __init__(self):
+        super(Predictor, self).__init__()
+
+    def forward(self, x):
+
+        x = x.view(x.size(0), -1)
+
+        real_scores = x.mean(dim=1).view(-1, 1) / 2
+        fake_scores = -real_scores
+
+        x = torch.cat((fake_scores, real_scores), dim=1)
+
+        return x
+
 class ModifiedDiscriminator(nn.Module):
 
     def __init__(self, image_size=128, conv_dim=64, c_dim=5, repeat_num=6):
