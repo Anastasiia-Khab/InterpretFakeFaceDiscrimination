@@ -9,9 +9,9 @@ transform = Compose([
     Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
 
 def get_discriminator():
-    discriminator = Discriminator(image_size=256).cuda()
-    discriminator.load_state_dict(torch.load('checkpoint/weights.model'))
-    return discriminator
+    discrim = Discriminator(image_size=256).cuda()
+    discrim.load_state_dict(torch.load('checkpoint/weights.model'))
+    return discrim
 
 def sigmoid(x):
     return 1 / (1 + torch.exp(-x))
