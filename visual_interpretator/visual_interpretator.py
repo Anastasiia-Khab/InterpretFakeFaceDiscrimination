@@ -25,8 +25,10 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 class VisualInterpretator():
 
-    def __init__(self, model):
+    def __init__(self, model, transforms, apply_transform=True):
 
+        self.apply_transform = apply_transform
+        self.transforms = transforms
         self.model = model
         self.cam_heatmaps = []
         self.grads = []
@@ -34,11 +36,16 @@ class VisualInterpretator():
     def gradcam(self, image, target_layer, target_class):
 
         if isinstance(image, PIL.Image.Image):
-            #image = image.resize((224, 224), Image.ANTIALIAS)
-            tensor_image = torch.Tensor(np.array(image)).unsqueeze(0).permute(0, 3, 1, 2)
+            if self.apply_transform:
+                tensor_image = self.transforms(image).unsqueeze(0)
+            else:
+                tensor_image = torch.Tensor(np.array(image)).unsqueeze(0).permute(0, 3, 1, 2)
 
         if isinstance(image, np.ndarray):
-            tensor_image = torch.Tensor(image).unsqueeze(0).permute(0, 3, 1, 2)
+            if self.apply_transform:
+                tensor_image = self.transforms(Image.fromarray(image)).unsqueeze(0)
+            else:
+                tensor_image = torch.Tensor(image).unsqueeze(0).permute(0, 3, 1, 2)
 
         grad_cam = GradCam(self.model, target_layer)
         cam_activation_map = grad_cam.generate_cam(tensor_image, target_class)
@@ -58,13 +65,18 @@ class VisualInterpretator():
     def smooth_grad(self, image, target_class, param_n=50, param_sigma_multiplier=4):
 
         if isinstance(image, PIL.Image.Image):
-            #image = image.resize((224, 224), Image.ANTIALIAS)
-            tensor_image = torch.tensor(np.array(image)).unsqueeze(0).permute(0, 3, 1, 2)
+            if self.apply_transform:
+                tensor_image = self.transforms(image).unsqueeze(0)
+            else:
+                tensor_image = torch.Tensor(np.array(image)).unsqueeze(0).permute(0, 3, 1, 2)
 
         if isinstance(image, np.ndarray):
-            tensor_image = torch.tensor(image).unsqueeze(0).permute(0, 3, 1, 2)
+            if self.apply_transform:
+                tensor_image = self.transforms(Image.fromarray(image)).unsqueeze(0)
+            else:
+                tensor_image = torch.Tensor(image).unsqueeze(0).permute(0, 3, 1, 2)
 
-        tensor_image = Variable(tensor_image.float(), requires_grad=True)
+        tensor_image.requires_grad = True
 
         vbp = VanillaBackprop(self.model)
         gbp = GuidedBackprop(self.model)
@@ -91,12 +103,12 @@ class VisualInterpretator():
 
         return output
 
-    def visualization(self, image, target_layer, target_class):
+    def visualization(self, image, target_layer, target_class, figsize=(15, 15)):
 
         self.gradcam(image, target_layer, target_class)
         self.smooth_grad(image, target_class)
 
-        fig = plt.figure(figsize=(15, 15), dpi=150)
+        fig = plt.figure(figsize=figsize, dpi=150)
         ax1 = plt.subplot2grid((4, 4), (0, 0), colspan=2, rowspan=2)
         ax1.axis('off')
         ax1.set_title('Original image')
@@ -121,5 +133,3 @@ class VisualInterpretator():
         ax5.axis('off')
         ax5.set_title('Guided gradient')
         ax5.imshow(self.grads[1])
-
-        plt.show()
