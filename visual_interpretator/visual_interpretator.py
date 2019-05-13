@@ -23,7 +23,7 @@ import matplotlib.pyplot as plt
 
 class VisualInterpretator():
 
-    def __init__(self, model, transforms=None, apply_transform=True, device=torch.device('cuda' if torch.cuda.is_available() else 'cpu')):
+    def __init__(self, model, transforms=None, apply_transform=True, device=torch.device('cuda')):
 
         self.device = device
         self.apply_transform = apply_transform
