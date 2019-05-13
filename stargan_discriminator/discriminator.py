@@ -10,7 +10,7 @@ transform = Compose([
 
 def get_discriminator():
     discrim = Discriminator(image_size=256).cuda()
-    discrim.load_state_dict(torch.load('checkpoint/weights.model'))
+    discrim.load_state_dict(torch.load('stargan_discriminator/checkpoint/weights.model'))
     return discrim
 
 def sigmoid(x):
