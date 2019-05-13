@@ -9,7 +9,7 @@ transform = Compose([
     Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
 
 def get_discriminator():
-    discriminator = Discriminator(256).cuda()
+    discriminator = Discriminator(image_size=256).cuda()
     discriminator.load_state_dict(torch.load('checkpoint/weights.model'))
     return discriminator
 
