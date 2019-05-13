@@ -3,7 +3,7 @@ from torchvision.utils import make_grid
 
 from PIL import Image
 
-from model import StyledGenerator
+from stylegan_generator.model import StyledGenerator
 
 def generate_fakes(num_images):
     generator = StyledGenerator(512).cuda()

@@ -1,7 +1,7 @@
 import torch
 from torchvision.transforms import Compose, Resize, ToTensor, Normalize
 
-from model import Discriminator
+from stargan_discriminator.model import Discriminator
 
 transform = Compose([
     Resize(256),
