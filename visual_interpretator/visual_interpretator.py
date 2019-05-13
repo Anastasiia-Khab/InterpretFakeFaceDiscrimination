@@ -99,9 +99,9 @@ class VisualInterpretator():
 
         return self.grads
 
-    def cnn_vis_layers(self, target_layer, target_position, epochs=300):
+    def cnn_vis_layers(self, target_layer, target_position, shape=(256, 256, 3), epochs=300):
 
-        layer_vis = CNNLayerVisualization(self.model.features, target_layer, target_position)
+        layer_vis = CNNLayerVisualization(self.model.features, shape, target_layer, target_position)
 
         output = layer_vis.visualise_layer_with_hooks(epochs=epochs)
         output = Image.fromarray(output)
