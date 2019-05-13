@@ -1,7 +1,7 @@
 import torch
 from torchvision.transforms import Compose, Resize, ToTensor, Normalize
 
-from stargan_discriminator.model import Discriminator
+from stargan_discriminator.model import Discriminator, ModifiedDiscriminator
 
 transform = Compose([
     Resize(256),
@@ -10,6 +10,11 @@ transform = Compose([
 
 def get_discriminator():
     discrim = Discriminator(image_size=256).cuda()
+    discrim.load_state_dict(torch.load('stargan_discriminator/checkpoint/weights.model'))
+    return discrim
+
+def get_modified_discriminator():
+    discrim = ModifiedDiscriminator(image_size=256).cuda()
     discrim.load_state_dict(torch.load('stargan_discriminator/checkpoint/weights.model'))
     return discrim
 
