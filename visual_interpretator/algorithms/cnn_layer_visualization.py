@@ -43,7 +43,7 @@ class CNNLayerVisualization():
         # Process image and return variable
         processed_image = preprocess_image(random_image, False)
         # Define optimizer for the image
-        optimizer = Adam([processed_image], lr=0.8, weight_decay=1e-5)
+        optimizer = Adam([processed_image], lr=1e-2, weight_decay=1e-3)
         for i in range(1, epochs):
             optimizer.zero_grad()
             # Assign create image to a variable to move forward in the model
