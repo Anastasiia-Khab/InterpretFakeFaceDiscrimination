@@ -19,7 +19,7 @@ def sigmoid(x):
 def predict(x, threshold=0.58):
     return (sigmoid(x.view(x.shape[0], -1).mean(-1)).detach().cpu().numpy() > threshold).astype(int)
 
-def discriminate(images, discriminator):
+def discriminate(images, discrim):
 
     processed_images = []
     for image in images:
@@ -27,7 +27,7 @@ def discriminate(images, discriminator):
         processed_images.append(processed_image)
     processed_images = torch.stack(processed_images).cuda()
 
-    preds, _ = discriminator(processed_images)
+    preds, _ = discrim(processed_images)
     preds = predict(preds)
 
     return preds
