@@ -5,8 +5,6 @@
 
 <p align="center"> Data Science Master Programme</p>
 
-<p align="center"> 12 May 2019 </p>
-
 <p align="center"><b> <big>Responsible Data Science final project</big></b> </p>
 
 <p align="right" ><b><i>Authors:</i></b></p> 
