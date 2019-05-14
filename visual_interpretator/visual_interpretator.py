@@ -8,6 +8,7 @@ from algorithms.smooth_grad import generate_smooth_grad
 
 import PIL
 from PIL import Image
+from PIL import ImageEnhance
 
 from utils.misc_functions import get_example_params, recreate_image, save_image,\
                             save_class_activation_images, apply_colormap_on_image
@@ -131,10 +132,10 @@ class VisualInterpretator():
 
         ax4 = plt.subplot2grid((4, 4), (1, 2), colspan=1, rowspan=1)
         ax4.axis('off')
-        ax4.set_title('Vanilla gradient (high contrast)')
-        ax4.imshow(self.grads[0])
+        ax4.set_title('Guided gradient \n (high contrast)')
+        ax4.imshow(ImageEnhance.Contrast(self.grads[1].convert('LA')).enhance(4.0))
 
         ax5 = plt.subplot2grid((4, 4), (1, 3), colspan=1, rowspan=1)
         ax5.axis('off')
-        ax5.set_title('Guided gradient')
+        ax5.set_title('Guided gradient \n (original)')
         ax5.imshow(self.grads[1])
