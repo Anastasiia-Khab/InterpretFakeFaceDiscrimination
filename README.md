@@ -9,8 +9,7 @@
 
 <p align="center"><b> <big>Responsible Data Science final project</big></b> </p>
 
-<p align="right" ><b><i>Authors:</i></b></p>
-  
+<p align="right" ><b><i>Authors:</i></b></p> 
 <p align="right"> Anastasiia Khaburska</p>
 <p align="right"> Anton Shcherbyna</p>
 <p align="right"> Vadym Korshunov</p>
@@ -25,7 +24,7 @@ In this work, we took StyleGAN - pretrained generator of fake faces - and StarGA
 -  Guided Backpropagation
 -  Gradient-weighted class activation mapping ([GradCAM](https://arxiv.org/pdf/1610.02391.pdf))
 
-**This [Colab Notebook](https://colab.research.google.com/drive/1I9bWp_wwu3kui8-AC6ghK6aikyE5XBIo
+ :notebook: **This [Colab Notebook](https://colab.research.google.com/drive/1I9bWp_wwu3kui8-AC6ghK6aikyE5XBIo
 ) is an interactive Report on our project.** 
 
 All the code, we where working on, may be seen our [GitHub repository](https://github.com/Anastasiia-Khab/responsible-ds-final-project)
