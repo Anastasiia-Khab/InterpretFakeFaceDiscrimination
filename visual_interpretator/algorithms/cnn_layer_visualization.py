@@ -40,7 +40,7 @@ class CNNLayerVisualization():
         # Hook the selected layer
         self.hook_layer()
         # Generate a random image
-        random_image = np.uint8(np.random.uniform(150, 180, self.input_shape))
+        random_image = np.uint8(np.random.uniform(-1, 1, self.input_shape))
         # Process image and return variable
         processed_image = preprocess_image(random_image, False)
         # Define optimizer for the image
