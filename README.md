@@ -1,3 +1,6 @@
+
+<p align="center">
+
 Ukrainian Catholic University  
 
 Faculty of Applied Sciences
@@ -7,14 +10,14 @@ Data Science Master Programme
 12 May 2019
 
 ## *Interpretability of Fake Face Discrimination*
-## Responsible Data Science final project
-  
----
+## Responsible Data Science final project  
+
 *Authors:*
 - Anastasiia Khaburska
 - Anton Shcherbyna
 - Vadym Korshunov
 - Yaroslava Lochman
+</p>
 
 The project idea was inspired by Kaggle competition ["Real and Fake Face Detection"](https://www.kaggle.com/ciplab/real-and-fake-face-detection) organised by Department of Computer Science, Yonsei University. 
 
