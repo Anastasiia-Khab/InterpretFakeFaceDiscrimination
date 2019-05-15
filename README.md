@@ -18,8 +18,8 @@ The project idea was inspired by Kaggle competition ["Real and Fake Face Detecti
 
 In this work, we took StyleGAN - pretrained generator of fake faces - and StarGAN - pretrained discriminator of faces - and investigated behaviour of this discriminative CNN model for the **Transparency** and **Interpretability** goals. We interpreted the model's output on the fake generated images. To accomplish this task, we  explored the most popular feature visualisation techniques and tried a few of them implemented in Pytorch:
 
--  Vanilla Backpropagation (with Smooth Gradient)
--  Guided Backpropagation
+-  [Vanilla Backpropagation](https://arxiv.org/pdf/1412.6806.pdf) (with Smooth Gradient)
+-  [Guided Backpropagation](https://arxiv.org/pdf/1412.6806.pdf)
 -  Gradient-weighted class activation mapping ([GradCAM](https://arxiv.org/pdf/1610.02391.pdf))
 
  :notebook: **This [Colab Notebook](https://colab.research.google.com/drive/1I9bWp_wwu3kui8-AC6ghK6aikyE5XBIo
